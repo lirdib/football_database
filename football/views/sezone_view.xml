@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sezone_form_view" model="ir.ui.view">
+            <field name="name">sezone.form</field>
+            <field name="model">sezone</field>
+            <field name="arch" type="xml">
+
+                <form string="Sezonet">
+                    <sheet>
+                        <div class="oe_title">
+<!--                            <label for="sezoni"/>-->
+                            <h1>
+                                <field name="sezoni" placeholder="Sezoni"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="data_e_fillimit"/>
+                            </group>
+                            <group>
+                                <field name="numri_i_ekipeve"/>
+                            </group>
+                            <group>
+                                <field name="data_e_mbarimit"/>
+                            </group>
+                            <group>
+                                <field name="cmimiVendiPare"/>
+                            </group>
+                            <group>
+                                <field name="cimiVendiDyte"/>
+                            </group>
+                            <group>
+                                <field name="cmimiVendiTrete"/>
+                            </group>
+                            <group>
+                                <field name="cimiVendiKatert"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sezone_tree_view" model="ir.ui.view">
+            <field name="name">sezone.tree</field>
+            <field name="model">sezone</field>
+            <field name="arch" type="xml">
+                <tree string="Sezone">
+                    <field name="sezoni"/>
+                    <field name="data_e_fillimit"/>
+                    <field name="data_e_mbarimit"/>
+                    <field name="numri_i_ekipeve"/>
+                    <field name="cmimiVendiPare"/>
+                    <field name="cimiVendiDyte"/>
+                    <field name="cmimiVendiTrete"/>
+                    <field name="cimiVendiKatert"/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="sezone_kanban_view" model="ir.ui.view">
+            <field name="name">sezone.kanban</field>
+            <field name="model">sezone</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="sezoni"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                               <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="sezoni"/>
+
+                                    </strong>
+                                </div>
+                                <field name="data_e_fillimit"/>
+                                <field name="data_e_mbarimit"/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="sezone_act_window" model="ir.actions.act_window">
+            <field name="name">Sezone</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sezone</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="Sezonet" id="sezone_menu" action="sezone_act_window"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="lojtare_form_view" model="ir.ui.view">
+            <field name="name">lojtari.form</field>
+            <field name="model">lojtari</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="mbiemri"/>
+                            </group>
+                              <group>
+                                <field name="ekipi_nga_i_cili_ka_ardhur_id"/>
+                            </group>
+                              <group>
+                                <field name="ekipi_aktual_id"/>
+                            </group>
+                              <group>
+                                <field name="paga"/>
+                            </group>
+                              <group>
+                                <field name="golat"/>
+                            </group>
+                              <group>
+                                <field name="kombesia_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="lojtare_tree_view" model="ir.ui.view">
+            <field name="name">lojtari.tree</field>
+            <field name="model">lojtari</field>
+            <field name="arch" type="xml">
+                <tree string="ModelTitle">
+                    <field name="name"/>
+                    <field name="mbiemri"/>
+                    <field name="ekipi_nga_i_cili_ka_ardhur_id"/>
+                    <field name="ekipi_aktual_id"/>
+                    <field name="paga"/>
+                     <field name="golat"/>
+                    <field name="kombesia_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="ModelName_kanban_view" model="ir.ui.view">
+            <field name="name">lojtari.kanban</field>
+            <field name="model">lojtari</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                     <field name="mbiemri"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="ekipi_aktual_id"/>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+       <record id="lojtari_act_window" model="ir.actions.act_window">
+            <field name="name">Lojtari</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lojtari</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="Lojtaret" id="lojaret_menu" action="lojtari_act_window"/>
+
+    </data>
+</odoo>
