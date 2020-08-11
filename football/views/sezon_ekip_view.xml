@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="renditja_form_view" model="ir.ui.view">
+            <field name="name">sezon_ekip.form</field>
+            <field name="model">sezonekip</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <header>
+                        <button name="llogarit_piket" type="object" string="Llogarit Piket"/>
+                    </header>
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="ekipit_id" string="Ekipi" />
+                            </group>
+                            <group>
+                                <field name="sezonit_id" string="sezoni"/>
+                            </group>
+                             <group>
+                                <field name="fitore"/>
+                            </group>
+                            <group>
+                                <field name="humbje"/>
+                            </group>
+                             <group>
+                                <field name="barazime"/>
+                            </group>
+                             <group>
+                                <field name="piket"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sezon_ekip_tree_view" model="ir.ui.view">
+            <field name="name">sezon_ekip.tree</field>
+            <field name="model">sezonekip</field>
+            <field name="arch" type="xml">
+                <tree string="ModelTitle">
+                    <field name="ekipit_id" string="Ekipi" />
+                    <field name="sezonit_id" string="sezoni" />
+                    <field name="fitore"/>
+                    <field name="humbje"/>
+                    <field name="barazime"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="sezon_ekip_kanban_view" model="ir.ui.view">
+            <field name="name">sezon_ekip.kanban</field>
+            <field name="model">sezonekip</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="ekipit_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="sezonit_id"/>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+             <record id="sezonekip_act_window" model="ir.actions.act_window">
+            <field name="name">sezonekip</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sezonekip</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="Statistika" id="sezonekip_menu" action="sezonekip_act_window"/>
+    </data>
+</odoo>

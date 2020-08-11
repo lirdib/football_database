@@ -30,6 +30,9 @@
                               <group>
                                 <field name="kombesia_id"/>
                             </group>
+                              <group>
+                                <field name="vlera_e_lojtarit"/>
+                            </group>
                         </group>
                     </sheet>
                 </form>
@@ -48,6 +51,7 @@
                     <field name="paga"/>
                      <field name="golat"/>
                     <field name="kombesia_id"/>
+                    <field name="vlera_e_lojtarit"/>
                 </tree>
             </field>
         </record>

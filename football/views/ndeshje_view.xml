@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="ndeshje_form_view" model="ir.ui.view">
+            <field name="name">ndeshje.form</field>
+            <field name="model">ndeshje</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="ekipi_home_id"/>
+                            </group>
+                            <group>
+                                <field name="gola_home"/>
+                            </group>
+                            <group>
+                                <field name="ekipi_away_id"/>
+                            </group>
+                            <group>
+                                <field name="gola_away"/>
+                            </group>
+                            <group>
+                                <field name="java"/>
+                            </group>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="ndeshje_tree_view" model="ir.ui.view">
+            <field name="name">ndeshje.tree</field>
+            <field name="model">ndeshje</field>
+            <field name="arch" type="xml">
+                <tree string="ModelTitle">
+                    <field name="ekipi_home_id"/>
+                    <field name="gola_home"/>
+                     <field name="ekipi_away_id"/>
+                    <field name="gola_away"/>
+                    <field name="java"/>
+
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="ndeshje_kanban_view" model="ir.ui.view">
+            <field name="name">ndeshje.kanban</field>
+            <field name="model">ndeshje</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="ekipi_home_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+
+                                        <field name="ekipi_away_id"/>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="ndeshje_act_window" model="ir.actions.act_window">
+            <field name="name">Ndeshje</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ndeshje</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="Ndeshje" id="ndeshje_menu" action="ndeshje_act_window"/>
+
+    </data>
+</odoo>

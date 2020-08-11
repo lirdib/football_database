@@ -21,6 +21,10 @@
         'views/sezone_view.xml',
         'views/ekipi_view.xml',
         'views/lojtari_view.xml',
+        'views/kombesia_view.xml',
+        'views/ndeshje_view.xml',
+        'views/transferime_view.xml',
+        'views/sezon_ekip_view.xml'
     ],
     'demo': [
     ],

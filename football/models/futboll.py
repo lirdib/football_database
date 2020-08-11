@@ -9,13 +9,36 @@ from odoo.modules.module import get_module_resource
 _logger = logging.getLogger(__name__)
 
 
+class Lojtari(models.Model):
+    _name = "lojtari"
+
+    # id = fields.Integer(required=True)
+    name = fields.Char(required=True)
+    vlera_e_lojtarit = fields.Integer()
+    mbiemri = fields.Char(required=True)
+    ekipi_nga_i_cili_ka_ardhur_id = fields.Many2one(comodel_name='ekipet', string='Ekipi From',
+                                                    required=False)  # many2one
+    ekipi_aktual_id = fields.Many2one(comodel_name='ekipet', string='Ekipi From', required=True)  # many2one
+    paga = fields.Integer(required=True)
+    golat = fields.Integer(required=True)
+    kombesia_id = fields.Many2one(comodel_name='kombesia', string='Kombesia', required=False)  # many2one
+
+
 class Ekipi(models.Model):
     _name = "ekipet"
 
     # id = fields.Integer(required=True)
     name = fields.Char(required=True)
     buxheti = fields.Integer()
-    # sezon_ekip = fields.Many2one(comodel_name='sezonekip',string='sezonekip')
+    vlera_e_ekpit = fields.Integer(default_value = False)
+
+    def llogarit_vlera_e_ekipit(self):
+        # lojtaret = self.env['lojtari'].search(['&', '|', ('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)])
+        # sum = 0
+        # for lojtar in lojtaret:
+        #     sum += lojtar.vlera_e_lojtarit
+        # self.vlera_e_ekpit = self.buxheti + sum
+        self.vlera_e_ekpit = self.buxheti + sum(self.env['lojtari'].search([('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)]).mapped('vlera_e_lojtarit'))
 
 
 class Sezon_ekip(models.Model):
@@ -27,6 +50,10 @@ class Sezon_ekip(models.Model):
     fitore = fields.Integer(required=True)
     humbje = fields.Integer(required=True)
     barazime = fields.Integer(required=True)
+    piket = fields.Integer()
+
+    def llogarit_piket(self):
+        self.piket = 3 * self.fitore + self.barazime
 
 
 class Ndeshje(models.Model):
@@ -37,20 +64,9 @@ class Ndeshje(models.Model):
     ekipi_away_id = fields.Many2one(comodel_name='ekipet', string='Ekipi away', required=False)  # many2one
     gola_away = fields.Integer(required=True)
     java = fields.Integer(required=True)
-    ekipi_a_id = fields.Many2one(comodel_name='ekipet')
+    #ekipi_a_id = fields.Many2one(comodel_name='ekipet')
 
 
-class Lojari(models.Model):
-    _name = "lojtari"
-
-    # id = fields.Integer(required=True)
-    name = fields.Char(required=True)
-    mbiemri = fields.Char(required=True)
-    ekipi_nga_i_cili_ka_ardhur_id = fields.Integer(required=True)  # many2one
-    ekipi_aktual_id = fields.Integer(required=True)  # many2one
-    paga = fields.Integer(required=True)
-    golat = fields.Integer(required=True)
-    kombesia_id = fields.Many2one(comodel_name='kombesia', string='Kombesia', required=False)  # many2one
 
 
 class Transferime(models.Model):

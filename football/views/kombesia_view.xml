@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="kombesia_form_view" model="ir.ui.view">
+            <field name="name">kombesia.form</field>
+            <field name="model">kombesia</field>
+            <field name="arch" type="xml">
+                <form string="kombesia">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                            <group>
+                                <field name="long_name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="kombesia_tree_view" model="ir.ui.view">
+            <field name="name">kombesia.tree</field>
+            <field name="model">kombesia</field>
+            <field name="arch" type="xml">
+                <tree string="ModelTitle">
+                    <field name="name"/>
+                    <field name="long_name"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="kombesia_kanban_view" model="ir.ui.view">
+            <field name="name">kombesia.kanban</field>
+            <field name="model">kombesia</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="long_name"/>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+      <record id="kombesia_act_window" model="ir.actions.act_window">
+            <field name="name">Kombesia</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">kombesia</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="Kombesia" id="kombesia_menu" action="kombesia_act_window"/>
+
+    </data>
+</odoo>

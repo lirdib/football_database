@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="Transferime_form_view" model="ir.ui.view">
+            <field name="name">Transferime.form</field>
+            <field name="model">transferime</field>
+            <field name="arch" type="xml">
+                <form string="ModelTitle">
+                    <sheet>
+
+                        <group>
+                            <group>
+                                <field name="id_lojtarit_id" placeholder="lojtari"/>
+
+                            </group>
+                            <group>
+                                <field name="ekipi_from_id" string="ekipi nga i cili ka ardhur"/>
+                            </group>
+                            <group>
+                                <field name="ekipi_to_id" string="ekipi me te cilin luan"/>
+                            </group>
+                            <group>
+                                <field name="lloji_kontrate"/>
+                            </group>
+                            <group>
+                                <field name="kohezgjatja_e_kontrates" string="data e mbarimit te kontrates"/>
+                            </group>
+                            <group>
+                                <field name="data_e_nenshkrimit"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="transferime_tree_view" model="ir.ui.view">
+            <field name="name">transferime.tree</field>
+            <field name="model">transferime</field>
+            <field name="arch" type="xml">
+                <tree string="ModelTitle">
+                    <field name="id_lojtarit_id"/>
+                    <field name="ekipi_from_id"/>
+                    <field name="ekipi_to_id"/>
+                    <field name="lloji_kontrate"/>
+                    <field name="kohezgjatja_e_kontrates"/>
+                    <field name="data_e_nenshkrimit"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="Transferime_kanban_view" model="ir.ui.view">
+            <field name="name">transferime.kanban</field>
+            <field name="model">transferime</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="id_lojtarit_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_res_partner_kanban">
+                                <div class="oe_kanban_details">
+                                    <strong class="o_kanban_record_title oe_partner_heading">
+                                        <field name="ekipi_from_id"/>
+                                        <field name="ekipi_to_id"/>
+                                    </strong>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+           <record id="trasnferime_act_window" model="ir.actions.act_window">
+            <field name="name">transferime</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">transferime</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context"></field>
+        </record>
+
+        <menuitem name="transferime" id="transferime_menu" action="trasnferime_act_window"/>
+
+    </data>
+</odoo>
