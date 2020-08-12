@@ -9,28 +9,30 @@
                 <form string="ModelTitle">
                     <header>
                         <button name="llogarit_piket" type="object" string="Llogarit Piket"/>
+                        <button name="llogarit_piket_nga_rezultatet" type="object" string="Llogarit fitoret,humbjet,barazimet"/>
                     </header>
                     <sheet>
 
                         <group>
                             <group>
-                                <field name="ekipit_id" string="Ekipi" />
+                                <field name="ekipit_id" string="Ekipi"/>
                             </group>
                             <group>
                                 <field name="sezonit_id" string="sezoni"/>
                             </group>
-                             <group>
+                            <group>
                                 <field name="fitore"/>
                             </group>
                             <group>
                                 <field name="humbje"/>
                             </group>
-                             <group>
+                            <group>
                                 <field name="barazime"/>
                             </group>
-                             <group>
+                            <group>
                                 <field name="piket"/>
                             </group>
+
                         </group>
                     </sheet>
                 </form>
@@ -42,15 +44,14 @@
             <field name="model">sezonekip</field>
             <field name="arch" type="xml">
                 <tree string="ModelTitle">
-                    <field name="ekipit_id" string="Ekipi" />
-                    <field name="sezonit_id" string="sezoni" />
+                    <field name="ekipit_id" string="Ekipi"/>
+                    <field name="sezonit_id" string="sezoni"/>
                     <field name="fitore"/>
                     <field name="humbje"/>
                     <field name="barazime"/>
                 </tree>
             </field>
         </record>
-
 
 
         <record id="sezon_ekip_kanban_view" model="ir.ui.view">
@@ -75,7 +76,7 @@
             </field>
         </record>
 
-             <record id="sezonekip_act_window" model="ir.actions.act_window">
+        <record id="sezonekip_act_window" model="ir.actions.act_window">
             <field name="name">sezonekip</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sezonekip</field>

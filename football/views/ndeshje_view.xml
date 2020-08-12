@@ -7,6 +7,7 @@
             <field name="model">ndeshje</field>
             <field name="arch" type="xml">
                 <form string="ModelTitle">
+
                     <sheet>
 
                         <group>
@@ -25,6 +26,9 @@
                             <group>
                                 <field name="java"/>
                             </group>
+                            <group>
+                                <field name="sezonekip_id" string="sezoni"/>
+                            </group>
 
                         </group>
                     </sheet>
@@ -42,6 +46,7 @@
                      <field name="ekipi_away_id"/>
                     <field name="gola_away"/>
                     <field name="java"/>
+                    <field name="sezonekip_id" string="sezoni"/>
 
                 </tree>
             </field>

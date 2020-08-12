@@ -30,7 +30,7 @@ class Ekipi(models.Model):
     # id = fields.Integer(required=True)
     name = fields.Char(required=True)
     buxheti = fields.Integer()
-    vlera_e_ekpit = fields.Integer(default_value = False)
+    vlera_e_ekpit = fields.Integer(default_value=False)
 
     def llogarit_vlera_e_ekipit(self):
         # lojtaret = self.env['lojtari'].search(['&', '|', ('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)])
@@ -38,7 +38,8 @@ class Ekipi(models.Model):
         # for lojtar in lojtaret:
         #     sum += lojtar.vlera_e_lojtarit
         # self.vlera_e_ekpit = self.buxheti + sum
-        self.vlera_e_ekpit = self.buxheti + sum(self.env['lojtari'].search([('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)]).mapped('vlera_e_lojtarit'))
+        self.vlera_e_ekpit = self.buxheti + sum(
+            self.env['lojtari'].search([('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)]).mapped('vlera_e_lojtarit'))
 
 
 class Sezon_ekip(models.Model):
@@ -52,6 +53,26 @@ class Sezon_ekip(models.Model):
     barazime = fields.Integer(required=True)
     piket = fields.Integer()
 
+    def llogarit_piket_nga_rezultatet(self):
+        ndeshje=self.env["ndeshje"].search(['&'("ekipi_home_id", "=", self.ekipit_id.id),('ekipi_away_id' ,'=', self.ekipit_id.id)])
+        for nd in ndeshje:
+            if nd.ekipi_home_id:
+                if nd.gola_home > nd.gola_away:
+                    self.fitore += 1
+                elif nd.gola_home == nd.gola_away:
+                    self.barazime += 1
+                else:
+                    self.humbje += 1
+            else:
+                if nd.gola_home < nd.gola_away:
+                    self.fitore += 1
+                elif nd.gola_home == nd.gola_away:
+                    self.barazime += 1
+                else:
+                    self.humbje += 1
+
+
+
     def llogarit_piket(self):
         self.piket = 3 * self.fitore + self.barazime
 
@@ -63,10 +84,11 @@ class Ndeshje(models.Model):
     gola_home = fields.Integer(required=True)
     ekipi_away_id = fields.Many2one(comodel_name='ekipet', string='Ekipi away', required=False)  # many2one
     gola_away = fields.Integer(required=True)
+    sezonekip_id = fields.Many2one(comodel_name='sezonekip', string='Sezoni', required=False)
     java = fields.Integer(required=True)
-    #ekipi_a_id = fields.Many2one(comodel_name='ekipet')
 
 
+    # ekipi_a_id = fields.Many2one(comodel_name='ekipet')
 
 
 class Transferime(models.Model):
