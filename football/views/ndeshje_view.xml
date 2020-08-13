@@ -7,7 +7,9 @@
             <field name="model">ndeshje</field>
             <field name="arch" type="xml">
                 <form string="ModelTitle">
-
+                     <header>
+                        <button name="perditeso_piket" type="object" string="Perditeso piket"/>
+                    </header>
                     <sheet>
 
                         <group>

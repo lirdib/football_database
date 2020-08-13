@@ -54,9 +54,10 @@ class Sezon_ekip(models.Model):
     piket = fields.Integer()
 
     def llogarit_piket_nga_rezultatet(self):
-        ndeshje=self.env["ndeshje"].search(['&'("ekipi_home_id", "=", self.ekipit_id.id),('ekipi_away_id' ,'=', self.ekipit_id.id)])
+        ndeshje = self.env["ndeshje"].search(
+            ['|',("ekipi_home_id", "=", self.ekipit_id.id), ('ekipi_away_id', '=', self.ekipit_id.id)])
         for nd in ndeshje:
-            if nd.ekipi_home_id:
+            if nd.ekipi_home_id.id == self.ekipit_id.id:
                 if nd.gola_home > nd.gola_away:
                     self.fitore += 1
                 elif nd.gola_home == nd.gola_away:
@@ -70,8 +71,6 @@ class Sezon_ekip(models.Model):
                     self.barazime += 1
                 else:
                     self.humbje += 1
-
-
 
     def llogarit_piket(self):
         self.piket = 3 * self.fitore + self.barazime
@@ -87,6 +86,15 @@ class Ndeshje(models.Model):
     sezonekip_id = fields.Many2one(comodel_name='sezonekip', string='Sezoni', required=False)
     java = fields.Integer(required=True)
 
+    def perditeso_piket(self):
+        flag = self.env["sezonekip"].search(
+            ['|',("ekipit_id", "=", self.ekipi_home_id.id), ("ekipit_id", '=',self.ekipi_away_id.id)])
+        if self.gola_home > self.gola_away:
+            flag.fitore += 1
+        elif self.gola_home == self.gola_away:
+            flag.barazime += 1
+        else:
+            flag.humbje += 1
 
     # ekipi_a_id = fields.Many2one(comodel_name='ekipet')
 
