@@ -1,0 +1,2 @@
+
+This project required you to have odoo set up and postgreSQL database instaleld even thought you don't have to use it as odoo handles everything for you.
