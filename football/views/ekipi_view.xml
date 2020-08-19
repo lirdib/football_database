@@ -21,6 +21,18 @@
                             <group>
                                 <field name="vlera_e_ekpit"/>
                             </group>
+                            <group>
+                                <field name="lojtaret_ids">
+                                    <tree editable="top">
+                                        <field name="name"/>
+                                    </tree>
+<!--                                    <form>-->
+<!--                                        <field name="name"/>-->
+<!--                                        <field name="ekipi_nga_i_cili_ka_ardhur_id"/>-->
+<!--                                    </form>-->
+                                </field>
+                                <field name="lojtaret_prone_ids" widget="many2many_tags"/>
+                            </group>
 
                         </group>
                     </sheet>
@@ -73,7 +85,8 @@
             <field name="context"></field>
         </record>
 
-        <menuitem name="Ekipet" id="ekipet_menu" action="ekipet_act_window"/>
+        <menuitem name="Football" id="football_menu"/>
+        <menuitem name="Ekipet" id="ekipet_menu" parent="football.football_menu" action="ekipet_act_window" sequence="1"/>
 
     </data>
 </odoo>

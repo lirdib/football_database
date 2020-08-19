@@ -18,7 +18,7 @@ class Lojtari(models.Model):
     mbiemri = fields.Char(required=True)
     ekipi_nga_i_cili_ka_ardhur_id = fields.Many2one(comodel_name='ekipet', string='Ekipi From',
                                                     required=False)  # many2one
-    ekipi_aktual_id = fields.Many2one(comodel_name='ekipet', string='Ekipi From', required=True)  # many2one
+    ekipi_aktual_id = fields.Many2one(comodel_name='ekipet', string='Ekipi aktual', required=True)  # many2one
     paga = fields.Integer(required=True)
     golat = fields.Integer(required=True)
     kombesia_id = fields.Many2one(comodel_name='kombesia', string='Kombesia', required=False)  # many2one
@@ -31,8 +31,14 @@ class Ekipi(models.Model):
     name = fields.Char(required=True)
     buxheti = fields.Integer()
     vlera_e_ekpit = fields.Integer(default_value=False)
+    lojtaret_ids = fields.One2many(comodel_name='lojtari', inverse_name='ekipi_aktual_id', string='')
+    lojtaret_prone_ids = fields.One2many(comodel_name='lojtari', inverse_name='ekipi_nga_i_cili_ka_ardhur_id', string='')
 
     def llogarit_vlera_e_ekipit(self):
+        for lojtar in self.lojtaret_ids:
+            lojtar.paga *= 1.1
+        for lojtar in self.lojtaret_ids.filtered(lambda l: l.paga < 50000):
+            lojtar.paga *= 1.2
         # lojtaret = self.env['lojtari'].search(['&', '|', ('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)])
         # sum = 0
         # for lojtar in lojtaret:
@@ -40,6 +46,8 @@ class Ekipi(models.Model):
         # self.vlera_e_ekpit = self.buxheti + sum
         self.vlera_e_ekpit = self.buxheti + sum(
             self.env['lojtari'].search([('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)]).mapped('vlera_e_lojtarit'))
+
+        self.vlera_e_ekpit = self.buxheti + sum(self.lojtaret_prone_ids.mapped('vlera_e_lojtarit'))
 
 
 class Sezon_ekip(models.Model):
@@ -55,7 +63,7 @@ class Sezon_ekip(models.Model):
 
     def llogarit_piket_nga_rezultatet(self):
         ndeshje = self.env["ndeshje"].search(
-            ['|',("ekipi_home_id", "=", self.ekipit_id.id), ('ekipi_away_id', '=', self.ekipit_id.id)])
+            ['|', ("ekipi_home_id", "=", self.ekipit_id.id), ('ekipi_away_id', '=', self.ekipit_id.id)])
         for nd in ndeshje:
             if nd.ekipi_home_id.id == self.ekipit_id.id:
                 if nd.gola_home > nd.gola_away:
@@ -79,22 +87,25 @@ class Sezon_ekip(models.Model):
 class Ndeshje(models.Model):
     _name = "ndeshje"
 
-    ekipi_home_id = fields.Many2one(comodel_name='ekipet', string='Ekipi home', required=False)  # many2one
+    sezonekip_home_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi home', required=False)  # many2one
     gola_home = fields.Integer(required=True)
-    ekipi_away_id = fields.Many2one(comodel_name='ekipet', string='Ekipi away', required=False)  # many2one
+    sezonekip_away_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi away', required=False)  # many2one
     gola_away = fields.Integer(required=True)
-    sezonekip_id = fields.Many2one(comodel_name='sezonekip', string='Sezoni', required=False)
+    sezon_id = fields.Many2one(comodel_name='sezone', string='Sezoni', required=False)
+    ekipi_home_id = fields.Many2one(related='sezonekip_home_id.ekipit_id', store=True)
+    ekipi_away_id = fields.Many2one(related='sezonekip_away_id.ekipit_id', store=True)
     java = fields.Integer(required=True)
 
     def perditeso_piket(self):
-        flag = self.env["sezonekip"].search(
-            ['|',("ekipit_id", "=", self.ekipi_home_id.id), ("ekipit_id", '=',self.ekipi_away_id.id)])
         if self.gola_home > self.gola_away:
-            flag.fitore += 1
+            self.sezonekip_home_id.fitore += 1
+            self.sezonekip_away_id.humbje += 1
         elif self.gola_home == self.gola_away:
-            flag.barazime += 1
+            self.sezonekip_home_id.barazime += 1
+            self.sezonekip_away_id.barazime
         else:
-            flag.humbje += 1
+            self.sezonekip_home_id.humbje += 1
+            self.sezonekip_away_id.fitore
 
     # ekipi_a_id = fields.Many2one(comodel_name='ekipet')
 
@@ -104,12 +115,35 @@ class Transferime(models.Model):
 
     # id = fields.Integer()
     id_lojtarit_id = fields.Many2one(comodel_name='lojtari', string='Transferimi', required=False)
-    ekipi_from_id = fields.Many2one(comodel_name='ekipet', string='Ekipifrom', required=False)
-    ekipi_to_id = fields.Many2one(comodel_name='ekipet', string='Ekipito', required=False)
+    ekipi_from_id = fields.Many2one(comodel_name='ekipet', string='Ekipifrom', required=False) #ekipi me te cilin luan
+    ekipi_to_id = fields.Many2one(comodel_name='ekipet', string='Ekipito', required=False) #ekipi tek i cili do te transferohet
     lloji_kontrate = fields.Boolean(string="Kontrate huazimi",
                                     description="uncheck kontrate blerje, check kontrate huazimi", default=False)
     kohezgjatja_e_kontrates = fields.Date()
     data_e_nenshkrimit = fields.Date()
+    vite_kontrate = fields.Float(string='Kohezgjatja ne vite', compute='llogarit_kohezgjatje')
+
+    @api.multi
+    @api.depends('data_e_nenshkrimit', 'kohezgjatja_e_kontrates')
+    def llogarit_kohezgjatje(self):
+        for record in self:
+            return True
+
+    state = fields.Selection(string='Statusi', default="draft",
+                             selection=[('draft', 'Draft'),
+                                        ('ne_ekzekutim', 'Ne ekzekutim'),
+                                        ('ekzekutuar', 'Ekzekutuar')])
+
+    @api.onchange('id_lojtarit_id')
+    def percakto_automatikisht_ekipin_me_te_cilin_luan(self):
+        self.ekipi_from_id =  self.id_lojtarit_id.ekipi_aktual_id.id
+
+    def kalo_ekzekutim(self):
+        self.state = 'ne_ekzekutim'
+
+    def kalo_ekzekutuar(self):
+        self.state = 'ekzekutuar'
+        self.id_lojtarit_id.ekipi_aktual_id = self.ekipi_to_id.id
 
 
 class Sezone(models.Model):

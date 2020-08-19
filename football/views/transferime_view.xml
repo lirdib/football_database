@@ -7,6 +7,11 @@
             <field name="model">transferime</field>
             <field name="arch" type="xml">
                 <form string="ModelTitle">
+                    <header>
+                        <button name="kalo_ekzekutim" type="object" states="draft" string="Kalo ne ekzekutim"/>
+                        <button name="kalo_ekzekutuar" type="object" states="ne_ekzekutim" string="Kalo ne ekzekutuar"/>
+                    </header>
+                    <field name="state" widget="statusbar" readonly="1"/>
                     <sheet>
 
                         <group>
@@ -15,10 +20,10 @@
 
                             </group>
                             <group>
-                                <field name="ekipi_from_id" string="ekipi nga i cili ka ardhur"/>
+                                <field name="ekipi_from_id" string="ekipi me te cilin luan" force_save="1" readonly="1"/>
                             </group>
                             <group>
-                                <field name="ekipi_to_id" string="ekipi me te cilin luan"/>
+                                <field name="ekipi_to_id" string="ekipi tek i cili do te transferohet"/>
                             </group>
                             <group>
                                 <field name="lloji_kontrate"/>
@@ -27,8 +32,9 @@
                                 <field name="kohezgjatja_e_kontrates" string="data e mbarimit te kontrates"/>
                             </group>
                             <group>
-                                <field name="data_e_nenshkrimit"/>
+                                <field name="data_e_nenshkrimit" state="ne_ekzekutim,ekzekutuar"/>
                             </group>
+
                         </group>
                     </sheet>
                 </form>

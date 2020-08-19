@@ -6,7 +6,7 @@
             <field name="name">lojtari.form</field>
             <field name="model">lojtari</field>
             <field name="arch" type="xml">
-                <form string="ModelTitle">
+                <form string="lojtare">
                     <sheet>
                         <group>
                             <group>
@@ -89,7 +89,7 @@
             <field name="context"></field>
         </record>
 
-        <menuitem name="Lojtaret" id="lojaret_menu" action="lojtari_act_window"/>
+        <menuitem name="Lojtaret" id="lojaret_menu" parent="football.football_menu" action="lojtari_act_window"/>
 
     </data>
 </odoo>

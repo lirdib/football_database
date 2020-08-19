@@ -29,7 +29,7 @@
                                 <field name="java"/>
                             </group>
                             <group>
-                                <field name="sezonekip_id" string="sezoni"/>
+<!--                                <field name="sezonekip_id" string="sezoni"/>-->
                             </group>
 
                         </group>
@@ -48,7 +48,7 @@
                      <field name="ekipi_away_id"/>
                     <field name="gola_away"/>
                     <field name="java"/>
-                    <field name="sezonekip_id" string="sezoni"/>
+<!--                    <field name="sezonekip_id" string="sezoni"/>-->
 
                 </tree>
             </field>
