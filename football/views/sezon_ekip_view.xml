@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="ModelTitle">
                     <header>
-                        <button name="llogarit_piket" type="object" string="Llogarit Piket"/>
+
                         <button name="llogarit_piket_nga_rezultatet" type="object" string="Llogarit fitoret,humbjet,barazimet"/>
                     </header>
                     <sheet>
@@ -30,7 +30,7 @@
                                 <field name="barazime"/>
                             </group>
                             <group>
-                                <field name="piket"/>
+                                <field name="piket" readonly="1"/>
                             </group>
 
                         </group>

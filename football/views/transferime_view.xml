@@ -34,6 +34,9 @@
                             <group>
                                 <field name="data_e_nenshkrimit" state="ne_ekzekutim,ekzekutuar"/>
                             </group>
+                            <group>
+                                <field name="vite_kontrate" state="ne_ekzekutim,ekzekutuar" readonly="1"/>
+                            </group>
 
                         </group>
                     </sheet>
