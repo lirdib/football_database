@@ -10,6 +10,7 @@ from odoo.modules.module import get_module_resource
 _logger = logging.getLogger(__name__)
 
 
+
 class Lojtari(models.Model):
     _name = "lojtari"
 
