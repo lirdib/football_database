@@ -4,7 +4,7 @@ from datetime import datetime
 
 from odoo import api, fields, models
 from odoo import tools, _
-from odoo.exceptions import ValidationError, AccessError
+from odoo.exceptions import ValidationError, AccessError, UserError
 from odoo.modules.module import get_module_resource
 
 _logger = logging.getLogger(__name__)
@@ -64,29 +64,36 @@ class Sezon_ekip(models.Model):
     humbje = fields.Integer(required=True)
     barazime = fields.Integer(required=True)
     piket = fields.Integer(compute='llogarit_piket')
-    
 
-    def llogarit_piket_nga_rezultatet(self):
-        ndeshje = self.env["ndeshje"].search(
-            ['|', ("ekipi_home_id", "=", self.ekipit_id.id), ('ekipi_away_id', '=', self.ekipit_id.id)])
-        for nd in ndeshje:
-            if nd.ekipi_home_id.id == self.ekipit_id.id:
-                if nd.gola_home > nd.gola_away:
-                    self.fitore += 1
-                elif nd.gola_home == nd.gola_away:
-                    self.barazime += 1
-                else:
-                    self.humbje += 1
-            else:
-                if nd.gola_home < nd.gola_away:
-                    self.fitore += 1
-                elif nd.gola_home == nd.gola_away:
-                    self.barazime += 1
-                else:
-                    self.humbje += 1
-
+    #ef llogarit_piket_nga_rezultatet(self):
+    #   ndeshje = self.env["ndeshje"].search(
+    #       ['|', ("ekipi_home_id", "=", self.ekipit_id.id), ('ekipi_away_id', '=', self.ekipit_id.id)])
+    #   for nd in ndeshje:
+    #       if nd.ekipi_home_id.id == self.ekipit_id.id:
+    #           if nd.gola_home > nd.gola_away:
+    #               self.fitore += 1
+    #           elif nd.gola_home == nd.gola_away:
+    #               self.barazime += 1
+    #           else:
+    #               self.humbje += 1
+    #       else:
+    #           if nd.gola_home < nd.gola_away:
+    #               self.fitore += 1
+    #           elif nd.gola_home == nd.gola_away:
+    #               self.barazime += 1
+    #           else:
+    #               self.humbje += 1
 
 
+   #def kryej_veprimet(self):
+   #    flag = self.env['ndeshje'].search([('status', '=', 'kane_laujtur')])
+   #    for ndeshje in flag:
+   #        if ndeshje.gola_home > ndeshje.gola_away:
+   #            self.fitore +=1
+   #        elif ndeshje.gola_home == ndeshje.gola_away:
+   #            self.barazime +=1
+   #        else:
+   #            self.humbje += 1
 
     @api.multi
     @api.depends('fitore', 'barazime')
@@ -98,31 +105,73 @@ class Sezon_ekip(models.Model):
 class Ndeshje(models.Model):
     _name = "ndeshje"
 
-    sezonekip_home_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi home', required=False)  # many2one
-    gola_home = fields.Integer(required=True)
-    sezonekip_away_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi away', required=False)  # many2one
-    gola_away = fields.Integer(required=True)
+    sezonekip_home_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi home', required=False, compute='_gjej_sezonekip_home_id')  # many2one
+    gola_home = fields.Integer()
+    sezonekip_away_id = fields.Many2one(comodel_name='sezonekip', string='Ekipi away', required=False, compute='_gjej_sezonekip_away_id')  # many2one
+    gola_away = fields.Integer()
     sezon_id = fields.Many2one(comodel_name='sezone', string='Sezoni', required=False)
-    ekipi_home_id = fields.Many2one(related='sezonekip_home_id.ekipit_id', store=True)
-    ekipi_away_id = fields.Many2one(related='sezonekip_away_id.ekipit_id', store=True)
+    ekipi_home_id = fields.Many2one(comodel_name="ekipet")
+    ekipi_away_id = fields.Many2one(comodel_name="ekipet")
     java = fields.Integer(required=True)
+    state = fields.Selection(string='Statusi', default='nuk_kane_luajur',
+                             selection=[('nuk_kane_luajur', 'Nuk kane luajtur'),
+                                        ('kane_luajtur', 'Kane Luajtur')])
 
-    @api.onchange('gola_home', 'gola_away')
-    def perditeso_piket(self):
+
+
+    @api.onchange('ekipi_home_id', 'ekipi_away_id', 'sezon_id')
+    def kontrollo_ndeshjet(self):
+        if self.sezon_id and self.ekipi_home_id and self.ekipi_away_id:
+            if self.env['ndeshje'].search(
+                    [('ekipi_home_id', '=', self.ekipi_home_id.id), ('ekipi_away_id', '=', self.ekipi_away_id.id),
+                     ('sezon_id', '=', self.sezon_id.id)]):
+                raise UserError('Kjo ndeshje eshte luajtur nje here')
+
+
+            elif self.ekipi_home_id.id == self.ekipi_away_id.id:
+                raise UserError('Dy ekipet nuk mund te jene te njejta')
+
+    @api.multi
+    @api.depends('ekipi_home_id', 'sezon_id')
+    def _gjej_sezonekip_home_id(self):
+        if self.sezon_id and self.ekipi_home_id:
+            self.sezonekip_home_id = self.env['sezonekip'].search([('sezonit_id', '=', self.sezon_id.id), ('ekipit_id', '=', self.ekipi_home_id.id)], limit=1)
+
+    @api.multi
+    @api.depends('ekipi_away_id', 'sezon_id')
+    def _gjej_sezonekip_away_id(self):
+        if self.sezon_id and self.ekipi_home_id:
+            self.sezonekip_away_id = self.env['sezonekip'].search(
+                [('sezonit_id', '=', self.sezon_id.id), ('ekipit_id', '=', self.ekipi_away_id.id)], limit=1)
+
+    def nderro_gjendje(self):
+        self.state = 'kane_luajtur'
         if self.gola_home > self.gola_away:
             self.sezonekip_home_id.fitore += 1
-            self.sezonekip_away_id.humbje += 1
+            self.sezonekip_away_id.humbje +=1
         elif self.gola_home == self.gola_away:
             self.sezonekip_home_id.barazime += 1
-            self.sezonekip_away_id.barazime
+            self.sezonekip_away_id.barazime +=1
         else:
             self.sezonekip_home_id.humbje += 1
-            self.sezonekip_away_id.fitore
+            self.sezonekip_away_id.fitore += 1
 
-    # ekipi_a_id = fields.Many2one(comodel_name='ekipet')
-    @api.onchange('ekipi_home_id','ekipi_away_id')
-    def kontrollo_ndeshjet(self):
-        pass
+        #lojtaret = self.env['lojtari'].search(['&', '|', ('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id),('ekipi_nga_i_cili_ka_ardhur_id', '=', self.id)])
+
+    def anulo_ndeshje(self):
+        self.state = 'nuk_kane_luajur'
+
+        if self.gola_home > self.gola_away:
+            self.sezonekip_home_id.fitore -= 1
+            self.sezonekip_away_id.humbje -=1
+        elif self.gola_home == self.gola_away:
+            self.sezonekip_home_id.barazime -= 1
+            self.sezonekip_away_id.barazime -=1
+        else:
+            self.sezonekip_home_id.humbje -= 1
+            self.sezonekip_away_id.fitore -= 1
+
+
 
 class Transferime(models.Model):
     _name = "transferime"
@@ -171,7 +220,7 @@ class Transferime(models.Model):
 class Sezone(models.Model):
     _name = "sezone"
 
-    # id_sezonit = fields.Integer()
+
     sezoni = fields.Char()
     data_e_fillimit = fields.Date()
     data_e_mbarimit = fields.Date()

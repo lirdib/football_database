@@ -10,6 +10,9 @@
                     <sheet>
 
                         <group>
+                             <group>
+                                <field name="sezoni"/>
+                            </group>
                             <group>
                                 <field name="data_e_fillimit"/>
                             </group>

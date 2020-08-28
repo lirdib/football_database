@@ -8,8 +8,11 @@
             <field name="arch" type="xml">
                 <form string="ModelTitle">
                      <header>
-                        <button name="perditeso_piket" type="object" string="Perditeso piket"/>
+                        <button name="nderro_gjendje" type="object" states="nuk_kane_luajur" string="nderro gjendje"/>
+                         <button name="anulo_ndeshje" type="object" states="kane_luajtur" string="anulo ndeshje"/>
                     </header>
+                    <field name="state" widget="statusbar" readonly="1"/>
+
                     <sheet>
 
                         <group>
@@ -27,10 +30,9 @@
                             </group>
                             <group>
                                 <field name="java"/>
+                                <field name="sezon_id"/>
                             </group>
-                            <group>
-<!--                                <field name="sezonekip_id" string="sezoni"/>-->
-                            </group>
+
 
                         </group>
                     </sheet>

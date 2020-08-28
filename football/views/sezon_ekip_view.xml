@@ -7,10 +7,6 @@
             <field name="model">sezonekip</field>
             <field name="arch" type="xml">
                 <form string="ModelTitle">
-                    <header>
-
-                        <button name="llogarit_piket_nga_rezultatet" type="object" string="Llogarit fitoret,humbjet,barazimet"/>
-                    </header>
                     <sheet>
 
                         <group>
